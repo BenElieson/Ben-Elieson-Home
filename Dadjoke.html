@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dad Joke Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fb;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    #joke {
+      font-size: 1.25rem;
+      margin: 1.5rem 0;
+      color: #444;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    #play-again {
+      background-color: #0077cc;
+      color: white;
+    }
+
+    #play-again:hover {
+      background-color: #005fa3;
+    }
+
+    #quit {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    #quit:hover {
+      background-color: #c0392b;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container" id="joke-app">
+    <h1>Dad Joke Generator</h1>
+    <div id="joke">Loading a hilarious joke...</div>
+    <div class="buttons">
+      <button id="play-again">Play Again</button>
+      <button id="quit">Quit</button>
+    </div>
+  </div>
+
+  <script>
+    const jokeText = document.getElementById('joke');
+    const playAgainBtn = document.getElementById('play-again');
+    const quitBtn = document.getElementById('quit');
+    const jokeApp = document.getElementById('joke-app');
+
+    async function fetchJoke() {
+      jokeText.textContent = "Loading a hilarious joke...";
+      try {
+        const response = await fetch('https://icanhazdadjoke.com/', {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        const data = await response.json();
+        jokeText.textContent = data.joke;
+      } catch (error) {
+        jokeText.textContent = "Oops! Couldn't fetch a joke. Try again!";
+      }
+    }
+
+    playAgainBtn.addEventListener('click', fetchJoke);
+    quitBtn.addEventListener('click', () => {
+      jokeApp.classList.add('hidden');
+    });
+
+    // Fetch a joke on load
+    fetchJoke();
+  </script>
+</body>
+</html>
